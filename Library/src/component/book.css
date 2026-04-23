@@ -1,0 +1,18 @@
+.book_card{
+    width: 10rem; 
+    min-height: 10rem;
+}
+.book_img{
+    width: 10rem; 
+    min-height: 5rem;
+}
+.title{
+    padding: 0.2rem;
+    margin: 1.5rem;
+}
+.author{
+    padding: 0;
+    margin: 0;
+    color: rgb(145, 175, 223);
+    font-weight: bold;
+}
