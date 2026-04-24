@@ -1,5 +1,7 @@
 import type { Member } from "../types/Member"
 import './BtsCard.css'
+import './memberCard.css'
+
 interface BtsProps{
     member:Member;
 }
@@ -7,6 +9,7 @@ interface BtsProps{
 export default function Bts({member}:BtsProps){
     // 객체 분해 
     const {image,nick} = member;
+    
     return(
         <div className="member-card">
             <img src={image} alt={nick} className="photo"/>
