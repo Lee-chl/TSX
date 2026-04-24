@@ -3,6 +3,7 @@ import Welcome from "./component/Welcome";
 import Text from "./component/Text";
 import SayHello from "./component/SayHello";
 import Library from "./component/Library";
+import EventBasic from "./component/Event_time";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
       <Text text="두번째" button="버튼!"/>
       <SayHello myName="HAHA" to="HA" />
       <Library/>
+      <EventBasic type="date"/>
+      <EventBasic type="time"/>
+      <EventBasic type="all"/>
     </>
   );
 }
