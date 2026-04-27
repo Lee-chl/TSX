@@ -4,6 +4,7 @@ import Text from "./component/Text";
 import SayHello from "./component/SayHello";
 import Library from "./component/Library";
 import EventBasic from "./component/Event_time";
+import LoginControl from "./component/LoginControl";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <EventBasic type="date"/>
       <EventBasic type="time"/>
       <EventBasic type="all"/>
+      <LoginControl />
     </>
   );
 }
