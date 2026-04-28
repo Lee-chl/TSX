@@ -8,6 +8,11 @@ import {TimeTest} from './Component/TimeTest'
 import MovieList  from './Component/MovieList'
 import ExUseMemo,{UseMemoTest} from './Component/ExUseMemo'
 import { ParentComponet } from './Component/ExUseCallback'
+import UseRefTest from './Component/UseRefTest'
+import UseReducerTest,{Login} from './Component/UseReducerTest'
+import DarkOrLight from './Component/ContextProvider'
+import CustomHook from './Component/CustomHook'
+import UseFetchShow from './Component/UseFetchShow'
 
 function App() {
 
@@ -23,6 +28,12 @@ function App() {
      <ExUseMemo num={1} />
      <UseMemoTest/>
      <ParentComponet />
+     <UseRefTest/>
+     <UseReducerTest />
+     <Login />
+     <DarkOrLight />
+     <CustomHook />
+     <UseFetchShow />
     </>
   )
 }
