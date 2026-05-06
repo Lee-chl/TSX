@@ -1,4 +1,9 @@
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 export function Header() {
   return (
@@ -26,9 +31,19 @@ export function Main() {
 }
 
 export function Product() {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const q = searchParams.get("q");
+  const q1 = searchParams.get("name");
+  const location = useLocation();
+
   return (
     <>
-      <h3>상품 페이지입니다.</h3>
+      <h3>{id}번 상품 페이지입니다.</h3>
+      <p>검색어 q:{q}</p>
+      <p>name: {q1}</p>
+      <p>search: {location.search}</p>
+      <p>hash: {location.hash}</p>
     </>
   );
 }
