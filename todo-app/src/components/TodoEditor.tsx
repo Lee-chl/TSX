@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./TodoEditor.css";
+import { TodoDispatchContext } from "../TodoContext";
 
-interface TodoEditorProps {
-  onCreate: (content: string) => void;
-}
-
-function TodoEditor({ onCreate }: TodoEditorProps) {
+function TodoEditor() {
   const [content, setContent] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { onCreate } = useContext(TodoDispatchContext);
 
   // 이벤트 핸들러의 타입을 맞추기 위해 따로 const 만들어서 넣어준다.
   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +24,7 @@ function TodoEditor({ onCreate }: TodoEditorProps) {
 
   // 키보드 엔터 처리
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.nativeEvent.isComposing) return;
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter") {
       onSubmit();
     }

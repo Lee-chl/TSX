@@ -1,13 +1,16 @@
 import "./TodoItem.css";
 import { type Todo } from "../App";
+import React, { useContext } from "react";
+import { TodoDispatchContext } from "../TodoContext";
 
 interface todoProps {
   todo: Todo;
-  onUpdate: (target: number) => void;
-  onDelete: (targetId: number) => void;
 }
 
-function TodoItem({ todo, onUpdate, onDelete }: todoProps) {
+function TodoItem({ todo }: todoProps) {
+  const { onUpdate, onDelete } = useContext(TodoDispatchContext);
+
+  console.log(`${todo.id} TodoItem update`);
   const onChangeCheck = () => {
     onUpdate(todo.id);
   };
@@ -32,4 +35,4 @@ function TodoItem({ todo, onUpdate, onDelete }: todoProps) {
   );
 }
 
-export default TodoItem;
+export default React.memo(TodoItem);

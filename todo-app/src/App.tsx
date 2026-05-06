@@ -1,29 +1,9 @@
-import { useReducer, useRef } from "react";
+import { useCallback, useMemo, useReducer, useRef } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import TodoEditor from "./components/TodoEditor";
 import TodoList from "./components/TodoList";
-
-const mockTodos = [
-  {
-    id: 0,
-    isDone: false,
-    content: "javascript 공부",
-    createDate: new Date().getTime(),
-  },
-  {
-    id: 1,
-    isDone: false,
-    content: "AI 공부하기",
-    createDate: new Date().getTime(),
-  },
-  {
-    id: 2,
-    isDone: false,
-    content: "React 공부하기",
-    createDate: new Date().getTime(),
-  },
-];
+import { TodoDispatchContext, TodoStateContext } from "./TodoContext";
 
 export interface Todo {
   id: number;
@@ -38,53 +18,71 @@ type Action =
   | { type: "DELETE"; targetId: number };
 
 function reducer(todos: Todo[], action: Action) {
+  let result;
   switch (action.type) {
-    case "CREATE":
-      return [action.newItem, ...todos];
-      
+    case "CREATE": {
+      // set할때마다 새로운 객체가 생성되어서 기존 객체에 있는 것을 ...으로 넣어줘야한다.
+      result = [action.newItem, ...todos];
+      break;
+    }
     case "UPDATE": {
-      return todos.map((td) =>
+      result = todos.map((td) =>
         td.id === action.targetId ? { ...td, isDone: !td.isDone } : td,
       );
+      break;
     }
     case "DELETE": {
-      return todos.filter((td) => td.id !== action.targetId);
+      result = todos.filter((td) => td.id !== action.targetId);
+      break;
     }
     default:
-      return todos;
+      result = todos;
   }
+  localStorage.setItem("todos", JSON.stringify(result)); // JSON.stringify() => Json으로 바낀다. / 로컬스토리지로 저장
+  return result;
 }
 
 function App() {
-  const [todos, dispatch] = useReducer(reducer, mockTodos);
+  const stored = localStorage.getItem("todos");
+  const initTodos: Todo[] = stored ? JSON.parse(stored) : []; // JSON.parse() json을 객체로 반환해주는 함수
+  const [todos, dispatch] = useReducer(reducer, initTodos);
+  const initId = Number(localStorage.getItem("todoId") ?? 1);
   //  id 는 화면에 노출되면 안되므로 ref 사용해서 관리
-  const idRef = useRef(3);
+  const idRef = useRef(initId);
 
-  const onCreate = (content: string) => {
+  const onCreate = useCallback((content: string) => {
     const newItem = {
       id: idRef.current,
       content,
       isDone: false,
       createDate: new Date().getTime(),
     };
-    // set할때마다 새로운 객체가 생성되어서 기존 객체에 있는 것을 ...으로 넣어줘야한다.
-    dispatch({type:'CREATE',newItem})
+    dispatch({ type: "CREATE", newItem });
     idRef.current += 1;
-  };
+    localStorage.setItem("todoId", JSON.stringify(idRef.current));
+  }, []);
 
-  const onUpdate = (targetId: number) => {
-    dispatch({type:'UPDATE',targetId})
-  };
+  const onUpdate = useCallback((targetId: number) => {
+    dispatch({ type: "UPDATE", targetId });
+  }, []);
 
-  const onDelete = (targetId: number) => {
-    dispatch({type:'DELETE',targetId})
-  };
+  const onDelete = useCallback((targetId: number) => {
+    dispatch({ type: "DELETE", targetId });
+  }, []);
+
+  const dispatches = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, [onCreate, onUpdate, onDelete]);
 
   return (
     <div className="App">
       <Header />
-      <TodoEditor onCreate={onCreate} />
-      <TodoList todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <TodoStateContext.Provider value={{ todos }}>
+        <TodoDispatchContext.Provider value={dispatches}>
+          <TodoEditor />
+          <TodoList />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }
