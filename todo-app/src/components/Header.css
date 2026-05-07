@@ -1,3 +1,9 @@
-.Header h1{
-    color: skyblue;
+.Header h1 {
+  color: skyblue;
+  display: flex;
+}
+
+.date-weather{
+  display: flex;
+  gap: 1rem;
 }
