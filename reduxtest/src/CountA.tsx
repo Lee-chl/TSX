@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { increase } from "./actions";
+import { increase } from "./store";
 export default function CountA() {
     const dispatch = useDispatch();
   return (
